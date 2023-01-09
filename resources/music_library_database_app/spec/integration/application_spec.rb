@@ -11,13 +11,12 @@ describe Application do
   let(:app) { Application.new }
 
   after(:each) do
-    expect(request.status).to eq 200
+    expect(@request.status).to eq 200
   end
 
   context "POST /albums request with body params" do
     it "returns status 200 and adds album to albums table" do
-      request = post("/albums", title: "Voyage",
-      release_year: 2022, artist_id: 2)
+      @request = post("/albums?title=Voyage&release_year=2022&artist_id=2")
       repo = AlbumRepository.new
       expect(repo.all.last.title).to eq  "Voyage"
     end
