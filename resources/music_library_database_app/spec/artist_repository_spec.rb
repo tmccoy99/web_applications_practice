@@ -8,15 +8,13 @@ def reset_artists_table
 end
 
 describe ArtistRepository do
-  before(:each) do 
-    reset_artists_table
-  end
+  after(:each) { reset_artists_table }
 
   it 'finds all artists' do
     repo = ArtistRepository.new
 
     artists = repo.all
-    
+
     expect(artists.length).to eq(4)
     expect(artists.first.name).to eq('Pixies')
   end
@@ -25,7 +23,7 @@ describe ArtistRepository do
     repo = ArtistRepository.new
 
     artist = repo.find(3)
-    
+
     expect(artist.id).to eq(3)
     expect(artist.name).to eq('Taylor Swift')
   end

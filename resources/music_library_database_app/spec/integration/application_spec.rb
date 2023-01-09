@@ -1,5 +1,5 @@
-require "spec_helper"
-require "rack/test"
+require 'spec_helper'
+require 'rack/test'
 require_relative '../../app'
 
 describe Application do
@@ -10,26 +10,31 @@ describe Application do
   # class so our tests work.
   let(:app) { Application.new }
 
-  after(:each) do
-    expect(@request.status).to eq 200
-  end
+  after(:each) { expect(@request.status).to eq 200 }
 
-  context "POST /albums request with body params" do
-    it "returns status 200 and adds album to albums table" do
-      @request = post("/albums?title=Voyage&release_year=2022&artist_id=2")
+  context 'POST /albums request with body params' do
+    it 'returns status 200 and adds album to albums table' do
+      @request = post('/albums?title=Voyage&release_year=2022&artist_id=2')
       repo = AlbumRepository.new
-      expect(repo.all.last.title).to eq  "Voyage"
+      expect(repo.all.last.title).to eq 'Voyage'
     end
   end
 
-#   # Request:
-# POST /albums
+  context 'GET /artists request' do
+    it 'return 200 ok and a list of artists names' do
+      @request = get('/artists')
+      expect(@request.body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone'
+    end
+  end
 
-# # With body parameters:
-# title=Voyage
-# release_year=2022
-# artist_id=2
+  #   # Request:
+  # POST /albums
 
-# # Expected response (200 OK)
-# (No content)
+  # # With body parameters:
+  # title=Voyage
+  # release_year=2022
+  # artist_id=2
+
+  # # Expected response (200 OK)
+  # (No content)
 end

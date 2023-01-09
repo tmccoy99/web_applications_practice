@@ -1,6 +1,6 @@
 # file: app.rb
 require 'sinatra'
-require "sinatra/reloader"
+require 'sinatra/reloader'
 require_relative 'lib/database_connection'
 require_relative 'lib/album_repository'
 require_relative 'lib/artist_repository'
@@ -14,11 +14,18 @@ class Application < Sinatra::Base
     also_reload 'lib/artist_repository'
   end
 
-  post "/albums" do
+  post '/albums' do
     album = Album.new
-    album.title, album.release_year, album.artist_id = 
-    params[:title], params[:release_year], params[:artist_id]
+    album.title, album.release_year, album.artist_id =
+      params[:title],
+      params[:release_year],
+      params[:artist_id]
     repo = AlbumRepository.new
     repo.create(album)
+  end
+
+  get '/artists' do
+    repo = ArtistRepository.new
+    repo.all.map(&:name).join(', ')
   end
 end
