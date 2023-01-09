@@ -27,6 +27,19 @@ describe Application do
     end
   end
 
+  context "POST /artists with body parameters" do
+    it "returns 200 ok and inserts artist into database" do
+      @request = post("/artists", name: "Wild Nothing",
+      genre: "Indie")
+      expect(get("/artists").body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone, Wild Nothing'
+
+      seed_sql = File.read('spec/seeds/artists_seeds.sql')
+      connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
+      connection.exec(seed_sql)
+    end
+  end
+
+
   #   # Request:
   # POST /albums
 
