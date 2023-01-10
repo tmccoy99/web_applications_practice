@@ -8,7 +8,7 @@ def reset_albums_table
 end
 
 describe AlbumRepository do
-  before(:each) do 
+  after(:each) do 
     reset_albums_table
   end
 
