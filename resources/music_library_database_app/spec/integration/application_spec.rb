@@ -10,7 +10,7 @@ describe Application do
   # class so our tests work.
   let(:app) { Application.new }
 
-  after(:each) { expect(@request.status).to eq 200 }
+  after(:each) { expect(@response.status).to eq 200 }
 
   context 'POST /albums request with body params' do
     it 'returns status 200 and adds album to albums table' do
@@ -45,6 +45,15 @@ describe Application do
       expect(@response.body).to include "<h1>Hello!</h1>"
     end
   end
+
+  context "GET /album/:id" do
+    it "returns HTML page with corresponding album information" do
+      @response = get("/albums/2")
+      expect(@response.body).to include("<h1>Surfer Rosa</h1>",
+      "Release year: 1988", "Artist: Pixies")
+    end
+  end 
+
 
 
   #   # Request:
