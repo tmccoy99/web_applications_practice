@@ -9,7 +9,16 @@ describe Application do
   # We need to declare the `app` value by instantiating the Application
   # class so our tests work.
   let(:app) { Application.new }
-  after(:each) { expect(@response.status).to eq 200 }
+
+  after(:each) do 
+    expect(@response.status).to eq 200
+    reset_artists_sql = File.read('spec/seeds/artists_seeds.sql')
+    reset_albums_sql = File.read('spec/seeds/albums_seeds.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
+    connection.exec(reset_albums_sql)
+    connection.exec(reset_artists_sql)
+    
+  end
 
   context 'POST /albums request with body params' do
     it 'returns status 200 and adds album to albums table' do
@@ -32,9 +41,6 @@ describe Application do
       genre: "Indie")
       expect(get("/artists").body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone, Wild Nothing'
 
-      seed_sql = File.read('spec/seeds/artists_seeds.sql')
-      connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
-      connection.exec(seed_sql)
     end
   end
 
