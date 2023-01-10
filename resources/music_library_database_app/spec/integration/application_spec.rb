@@ -9,12 +9,11 @@ describe Application do
   # We need to declare the `app` value by instantiating the Application
   # class so our tests work.
   let(:app) { Application.new }
-
   after(:each) { expect(@response.status).to eq 200 }
 
   context 'POST /albums request with body params' do
     it 'returns status 200 and adds album to albums table' do
-    @response = post('/albums?title=Voyage&release_year=2022&artist_id=2')
+      @response = post('/albums?title=Voyage&release_year=2022&artist_id=2')
       repo = AlbumRepository.new
       expect(repo.all.last.title).to eq 'Voyage'
     end
@@ -22,14 +21,14 @@ describe Application do
 
   context 'GET /artist request' do
     it 'return 200 ok and a list of artists names' do
-    @response = get('/artists')
+      @response = get('/artists')
       expect(@response.body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone'
     end
   end
 
   context "POST /artists with body parameters" do
     it "returns 200 ok and inserts artist into database" do
-    @response = post("/artists", name: "Wild Nothing",
+      @response = post("/artists", name: "Wild Nothing",
       genre: "Indie")
       expect(get("/artists").body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone, Wild Nothing'
 
@@ -40,19 +39,31 @@ describe Application do
   end
 
   context "GET /hello" do
-    it "returns HTML greeting page" do
+    it "returns HTML greeting page and 200 ok" do
       @response = get("/hello")
       expect(@response.body).to include "<h1>Hello!</h1>"
     end
   end
 
   context "GET /album/:id" do
-    it "returns HTML page with corresponding album information" do
+    it "returns HTML page with corresponding album information and 200 ok" do
       @response = get("/album/2")
       expect(@response.body).to include("<h1>Surfer Rosa</h1>",
       "Release year: 1988", "Artist: Pixies")
     end
-  end 
+  end
+
+  context "GET /albums" do
+    it "returns HTML page of all albums in database and 200 ok" do
+      @response = get("/albums")
+      repo = AlbumRepository.new
+      repo.all.each do |album|
+        expect(@response.body).to include("Title: #{album.title}", 
+        "Released: #{album.release_year}")
+      end
+      expect(@response.body).to include "<h1>Albums</h1>"
+    end
+  end
 
 
 
