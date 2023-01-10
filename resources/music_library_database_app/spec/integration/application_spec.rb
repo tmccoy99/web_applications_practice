@@ -48,7 +48,7 @@ describe Application do
 
   context "GET /album/:id" do
     it "returns HTML page with corresponding album information" do
-      @response = get("/albums/2")
+      @response = get("/album/2")
       expect(@response.body).to include("<h1>Surfer Rosa</h1>",
       "Release year: 1988", "Artist: Pixies")
     end
