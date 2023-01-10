@@ -36,4 +36,8 @@ class Application < Sinatra::Base
     repo.create(artist)
   end
 
+  get "/hello" do
+    erb(:hello)
+  end
+
 end
