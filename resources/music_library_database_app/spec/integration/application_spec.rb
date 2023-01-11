@@ -9,15 +9,28 @@ describe Application do
   # We need to declare the `app` value by instantiating the Application
   # class so our tests work.
   let(:app) { Application.new }
+  let(:album_repo) { AlbumRepository.new }
+  let(:artist_repo) { ArtistRepository.new }
+
 
   after(:each) do 
     expect(@response.status).to eq 200
+    
     reset_artists_sql = File.read('spec/seeds/artists_seeds.sql')
     reset_albums_sql = File.read('spec/seeds/albums_seeds.sql')
     connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
     connection.exec(reset_albums_sql)
     connection.exec(reset_artists_sql)
-    
+  end
+
+  context 'GET /albums' do 
+    it 'should return the list of albums each in its own div' do
+      albums = album_repo.all
+      response = get('/albums')
+      albums.each do |record|
+        expect(response.body).to include("Title: #{record.title}", "Release Year: #{record.release_year}")
+      end
+    end
   end
 
   context 'POST /albums request with body params' do
@@ -51,9 +64,9 @@ describe Application do
     end
   end
 
-  context "GET /album/:id" do
+  context "GET /albums/:id" do
     it "returns HTML page with corresponding album information and 200 ok" do
-      @response = get("/album/2")
+      @response = get("/albums/2")
       expect(@response.body).to include("<h1>Surfer Rosa</h1>",
       "Release year: 1988", "Artist: Pixies")
     end
