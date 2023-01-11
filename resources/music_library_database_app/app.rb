@@ -53,4 +53,9 @@ class Application < Sinatra::Base
     @artist = @artist_repo.find(@album.artist_id)
     erb(:album)
   end
+
+  get "/artists/:id" do
+    @artist = @artist_repo.find(params[:id])
+    erb(:artist)
+  end
 end
