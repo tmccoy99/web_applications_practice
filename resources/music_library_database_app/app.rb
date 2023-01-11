@@ -26,10 +26,14 @@ class Application < Sinatra::Base
 
   post '/albums' do
     @album = Album.new
-    @album.title, @album.release_year, @album.artist_id =
-      params[:title],
-      params[:release_year],
-      params[:artist_id]
+    album_attributes = [params[:title],
+    params[:release_year], 
+    params[:artist_id]]
+    if album_attributes.any?(&:nil?)
+      status 400
+      return ""
+    end
+    @album.title, @album.release_year, @album.artist_id = album_attributes
     @album_repo.create(@album)
     erb(:created_album)
   end
