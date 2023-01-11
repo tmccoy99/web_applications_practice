@@ -44,9 +44,10 @@ class Application < Sinatra::Base
   end
 
   post '/artists' do
-    artist = Artist.new
-    artist.genre, artist.name = params[:genre], params[:name]
-    @artist_repo.create(artist)
+    @artist = Artist.new
+    @artist.name, @artist.genre = params[:name], params[:genre]
+    @artist_repo.create(@artist)
+    erb(:created_artist)
   end
 
   get "/hello" do
