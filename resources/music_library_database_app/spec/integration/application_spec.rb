@@ -108,9 +108,11 @@ describe "Application testing for other response codes" do
   end
 
   context "POST /albums request with invalid input" do
-    @response = post("/albums", title: "Hello")
-    expect(@response.status).to eq 400
-    expect(@response.body).to eq ""
+    it "response has status 400 and empty body" do
+      @response = post("/albums", title: "Hello")
+      expect(@response.status).to eq 400
+      expect(@response.body).to eq ""
+    end
   end
 
 end
