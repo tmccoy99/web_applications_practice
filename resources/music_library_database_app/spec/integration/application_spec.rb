@@ -38,7 +38,8 @@ describe "Application testing for 200 ok responses" do
     it 'returns status 200 and adds album to albums table' do
       @response = post('/albums?title=Voyage&release_year=2022&artist_id=2')
       expect(album_repo.all.last.title).to eq 'Voyage'
-      expect(@response.body).to include("Voyage has been added to the database!")
+      expect(@response.body).to include("<h1>Success</h1>",
+      "Voyage has been added to the database!")
     end
   end
 
@@ -104,6 +105,12 @@ describe "Application testing for other response codes" do
     connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
     connection.exec(reset_albums_sql)
     connection.exec(reset_artists_sql)
+  end
+
+  context "POST /albums request with invalid input" do
+    @response = post("/albums", title: "Hello")
+    expect(@response.status).to eq 400
+    expect(@response.body).to eq ""
   end
 
 end
