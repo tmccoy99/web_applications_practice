@@ -71,7 +71,7 @@ describe Application do
   context "GET /artists/:id" do
     it "returns HTML page with artist info and 200ok status" do
       @response = get("/artists/2")
-      expect(response.body).to include("Name: ABBA", "Genre: Pop")
+      expect(@response.body).to include("Name: ABBA", "Genre: Pop")
     end
   end
 
