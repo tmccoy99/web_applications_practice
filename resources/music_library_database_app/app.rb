@@ -48,6 +48,10 @@ class Application < Sinatra::Base
     erb(:hello)
   end
 
+  get "/albums/new" do
+    erb(:new_album)
+  end
+
   get "/albums/:id" do
     @album = @album_repo.find(params[:id])
     @artist = @artist_repo.find(@album.artist_id)
