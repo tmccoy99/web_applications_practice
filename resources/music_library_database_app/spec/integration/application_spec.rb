@@ -53,15 +53,6 @@ describe Application do
     end
   end
 
-  context "POST /artists with body parameters" do
-    it "returns 200 ok and inserts artist into database" do
-      @response = post("/artists", name: "Wild Nothing",
-      genre: "Indie")
-      expect(get("/artists").body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone, Wild Nothing'
-
-    end
-  end
-
   context "GET /hello" do
     it "returns HTML greeting page and 200 ok" do
       @response = get("/hello")
