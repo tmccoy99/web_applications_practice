@@ -101,7 +101,7 @@ describe "Application testing for 200 ok responses" do
       @response = post("/artists", name: "Arctic Monkeys",
       genre: "Alternative")
       expect(artist_repo.find(5).name).to eq "Arctic Monkeys"
-      expect(@response.body).to include ("<h1>Success</h1>",
+      expect(@response.body).to include("<h1>Success</h1>",
       "Arctic Monkeys has been added to the database!")
     end
   end
