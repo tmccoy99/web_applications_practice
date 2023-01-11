@@ -29,7 +29,7 @@ class Application < Sinatra::Base
 
   # create new post
   post '/posts' do
-    new_post = Post.new(params[:the_title], params[:content], params[:tags].split(','))
+    new_post = Post.new(params[:title], params[:content], params[:tags].split(','))
     @post_manager.add_post(new_post)
 
     return redirect('/')
