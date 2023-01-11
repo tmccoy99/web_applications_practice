@@ -127,11 +127,19 @@ describe "Application testing for other response codes" do
     connection.exec(reset_artists_sql)
   end
 
-  context "POST /albums request with invalid input" do
+  context "POST /albums request with invalid body parameters" do
     it "response has status 400 and empty body" do
-      @response = post("/albums", title: "Hello")
-      expect(@response.status).to eq 400
-      expect(@response.body).to eq ""
+      response = post("/albums", title: "Hello")
+      expect(response.status).to eq 400
+      expect(response.body).to eq ""
+    end
+  end
+
+  context "POST /artists request with invalid body parameters" do
+    it "response has status 400 and empty body" do
+      response = post("/artists", genre: "METAL BRO")
+      expect(response.status).to eq 400
+      expect(response.body).to eq ""
     end
   end
 
