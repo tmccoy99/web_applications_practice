@@ -25,12 +25,13 @@ class Application < Sinatra::Base
   end
 
   post '/albums' do
-    album = Album.new
-    album.title, album.release_year, album.artist_id =
+    @album = Album.new
+    @album.title, @album.release_year, @album.artist_id =
       params[:title],
       params[:release_year],
       params[:artist_id]
-    @album_repo.create(album)
+    @album_repo.create(@album)
+    erb(:created_album)
   end
 
   get '/artists' do
