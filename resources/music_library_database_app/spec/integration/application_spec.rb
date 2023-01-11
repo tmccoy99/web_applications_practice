@@ -89,10 +89,18 @@ describe "Application testing for 200 ok responses" do
   context "GET /artists/new" do
     it "returns the form page and 200ok status" do
       @response = get("/artists/new")
-      expect(@response.body).to include("<h1>Add an Artist/h1>",
-      "<input type=\"text\" name=\"Name\"",
-      "<input type=\"text\" name=\"Genre\">",
+      expect(@response.body).to include("<h1>Add an Artist</h1>",
+      "<input type=\"text\" name=\"name\"",
+      "<input type=\"text\" name=\"genre\">",
       "<input type=\"submit\" value=\"Submit the form\">")
+    end
+  end
+
+  context "POST /artists with body params" do
+    it "Adds artist to database" do
+      @response = post("/artists", name: "Arctic Monkeys",
+      genre: "Alternative")
+      expect(artist_repo.find(5).name).to eq "Arctic Monkeys"
     end
   end
 
