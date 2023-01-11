@@ -38,6 +38,7 @@ describe "Application testing for 200 ok responses" do
     it 'returns status 200 and adds album to albums table' do
       @response = post('/albums?title=Voyage&release_year=2022&artist_id=2')
       expect(album_repo.all.last.title).to eq 'Voyage'
+      expect(@response.body).to include("Voyage has been added to the database!")
     end
   end
 
