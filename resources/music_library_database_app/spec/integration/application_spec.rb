@@ -96,11 +96,13 @@ describe "Application testing for 200 ok responses" do
     end
   end
 
-  context "POST /artists with body params" do
-    it "Adds artist to database" do
+  context "POST /artists with valid body params" do
+    it "Adds artist to database and returns HTML confirmation" do
       @response = post("/artists", name: "Arctic Monkeys",
       genre: "Alternative")
       expect(artist_repo.find(5).name).to eq "Arctic Monkeys"
+      expect(@response.body).to include ("<h1>Success</h1>",
+      "Arctic Monkeys has been added to the database!")
     end
   end
 
