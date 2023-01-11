@@ -42,10 +42,14 @@ describe Application do
     end
   end
 
-  context 'GET /artist request' do
-    it 'return 200 ok and a list of artists names' do
+  context 'GET /artists request' do
+    it "response is a HTML page of artists with 200ok status" do
       @response = get('/artists')
-      expect(@response.body).to eq 'Pixies, ABBA, Taylor Swift, Nina Simone'
+      artist_repo.all.each do |artist|
+        expect(@response.body).to include("Name: #{artist.name}",
+        "Genre: #{artist.genre}", 
+        "<a href=\"/artists/#{artist.id}\">Go to the artist page</a>")
+      end
     end
   end
 
@@ -73,15 +77,4 @@ describe Application do
     end
   end
 
-
-  #   # Request:
-  # POST /albums
-
-  # # With body parameters:
-  # title=Voyage
-  # release_year=2022
-  # artist_id=2
-
-  # # Expected @response (200 OK)
-  # (No content)
 end
