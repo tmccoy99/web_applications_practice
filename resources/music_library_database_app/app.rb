@@ -19,6 +19,11 @@ class Application < Sinatra::Base
     @artist_repo, @album_repo = ArtistRepository.new, AlbumRepository.new
   end
 
+  get '/albums' do
+    @albums = @album_repo.all
+    erb(:albums)
+  end
+
   post '/albums' do
     album = Album.new
     album.title, album.release_year, album.artist_id =
@@ -42,7 +47,7 @@ class Application < Sinatra::Base
     erb(:hello)
   end
 
-  get "/album/:id" do
+  get "/albums/:id" do
     @album = @album_repo.find(params[:id])
     @artist = @artist_repo.find(@album.artist_id)
     erb(:album)
