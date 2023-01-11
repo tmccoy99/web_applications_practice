@@ -15,7 +15,6 @@ describe Application do
 
   after(:each) do 
     expect(@response.status).to eq 200
-    
     reset_artists_sql = File.read('spec/seeds/artists_seeds.sql')
     reset_albums_sql = File.read('spec/seeds/albums_seeds.sql')
     connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
@@ -26,9 +25,11 @@ describe Application do
   context 'GET /albums' do 
     it 'should return the list of albums each in its own div' do
       albums = album_repo.all
-      response = get('/albums')
-      albums.each do |record|
-        expect(response.body).to include("Title: #{record.title}", "Release Year: #{record.release_year}")
+      @response = get('/albums')
+      albums.each do |album|
+        expect(@response.body).to include("Title: #{album.title}", 
+        "Release Year: #{album.release_year}",
+        "<a href=\"/albums/#{album.id}\">Go to the album page</a>")
       end
     end
   end
@@ -71,19 +72,6 @@ describe Application do
       "Release year: 1988", "Artist: Pixies")
     end
   end
-
-  context "GET /albums" do
-    it "returns HTML page of all albums in database and 200 ok" do
-      @response = get("/albums")
-      repo = AlbumRepository.new
-      repo.all.each do |album|
-        expect(@response.body).to include("Title: #{album.title}", 
-        "Released: #{album.release_year}")
-      end
-      expect(@response.body).to include "<h1>Albums</h1>"
-    end
-  end
-
 
 
   #   # Request:
