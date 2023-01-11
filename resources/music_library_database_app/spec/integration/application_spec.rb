@@ -37,8 +37,7 @@ describe "Application testing for 200 ok responses" do
   context 'POST /albums request with body params' do
     it 'returns status 200 and adds album to albums table' do
       @response = post('/albums?title=Voyage&release_year=2022&artist_id=2')
-      repo = AlbumRepository.new
-      expect(repo.all.last.title).to eq 'Voyage'
+      expect(album_repo.all.last.title).to eq 'Voyage'
     end
   end
 
@@ -78,7 +77,7 @@ describe "Application testing for 200 ok responses" do
   context "GET /albums/new" do
     it "returns the form page and 200ok status" do
       @response = get("/albums/new")
-      expect(@response.body).to include("<h1>Add an album</h1>",
+      expect(@response.body).to include("<h1>Add an Album</h1>",
       "<input type=\"text\" name=\"title\"",
       "<input type=\"text\" name=\"release_year\">",
       "<input type=\"submit\" value=\"Submit the form\">")
