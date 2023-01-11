@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'rack/test'
 require_relative '../../app'
 
-describe Application do
+describe "Application testing for 200 ok responses" do
   # This is so we can use rack-test helper methods.
   include Rack::Test::Methods
 
@@ -73,6 +73,37 @@ describe Application do
       @response = get("/artists/2")
       expect(@response.body).to include("Name: ABBA", "Genre: Pop")
     end
+  end
+
+  context "GET /albums/new" do
+    it "returns the form page and 200ok status" do
+      @response = get("/albums/new")
+      expect(@response.body).to include("<h1>Add an album</h1>",
+      "<input type=\"text\" name=\"title\"",
+      "<input type=\"text\" name=\"release_year\">",
+      "<input type=\"submit\" value=\"Submit the form\">")
+    end
+  end
+
+end
+
+describe "Application testing for other response codes" do
+  # This is so we can use rack-test helper methods.
+  include Rack::Test::Methods
+
+  # We need to declare the `app` value by instantiating the Application
+  # class so our tests work.
+  let(:app) { Application.new }
+  let(:album_repo) { AlbumRepository.new }
+  let(:artist_repo) { ArtistRepository.new }
+
+
+  after(:each) do 
+    reset_artists_sql = File.read('spec/seeds/artists_seeds.sql')
+    reset_albums_sql = File.read('spec/seeds/albums_seeds.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
+    connection.exec(reset_albums_sql)
+    connection.exec(reset_artists_sql)
   end
 
 end
