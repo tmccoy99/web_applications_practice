@@ -34,7 +34,8 @@ class Application < Sinatra::Base
   end
 
   get '/artists' do
-    @artist_repo.all.map(&:name).join(', ')
+    @artists = @artist_repo.all
+    erb(:artists)
   end
 
   post '/artists' do
