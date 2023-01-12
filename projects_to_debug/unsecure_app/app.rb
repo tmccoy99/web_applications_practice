@@ -12,7 +12,10 @@ class Application < Sinatra::Base
 
   post '/hello' do
     @name = params[:name]
-
+    if @name =~ /[^\w\s]/
+      status 400
+      return ""
+    end
     return erb(:hello)
   end
 end
