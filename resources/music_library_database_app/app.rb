@@ -46,6 +46,10 @@ class Application < Sinatra::Base
   post '/artists' do
     @artist = Artist.new
     @artist.name, @artist.genre = params[:name], params[:genre]
+    if @artist.name.nil? || @artist.genre.nil?
+      status 400
+      return ""
+    end
     @artist_repo.create(@artist)
     erb(:created_artist)
   end
